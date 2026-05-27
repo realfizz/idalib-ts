@@ -8,10 +8,7 @@
   "napi": {
     "binaryName": "idalib-node",
     "targets": [
-      "aarch64-apple-darwin",
-      "x86_64-apple-darwin",
-      "x86_64-unknown-linux-gnu",
-      "x86_64-pc-windows-msvc"
+      "aarch64-apple-darwin"
     ]
   },
   "scripts": {
@@ -38,10 +35,7 @@
     "node": ">= 16"
   },
   "optionalDependencies": {
-    "@idalib/ts-darwin-arm64": "0.1.0",
-    "@idalib/ts-darwin-x64": "0.1.0",
-    "@idalib/ts-linux-x64-gnu": "0.1.0",
-    "@idalib/ts-win32-x64-msvc": "0.1.0"
+    "@idalib/ts-darwin-arm64": "0.1.1"
   },
   "devDependencies": {
     "@napi-rs/cli": "^3.6.2"
