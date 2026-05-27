@@ -1,0 +1,22 @@
+[package]
+name = "idalib-node"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+napi = { version = "3", features = ["napi8", "async", "serde-json"] }
+napi-derive = "3"
+idalib = "0.9"
+cxx = "1"
+idalib-build = "0.9"
+
+[build-dependencies]
+napi-build = "1"
+idalib-build = "0.9"
+
+[profile.release]
+lto = true
+strip = "symbols"

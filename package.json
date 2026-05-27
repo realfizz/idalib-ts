@@ -1,0 +1,49 @@
+{
+  "name": "@idalib/ts",
+  "version": "0.1.1",
+  "description": "Node.js native bindings for the IDA Pro SDK via idalib",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "napi": {
+    "binaryName": "idalib-node",
+    "targets": [
+      "aarch64-apple-darwin",
+      "x86_64-apple-darwin",
+      "x86_64-unknown-linux-gnu",
+      "x86_64-pc-windows-msvc"
+    ]
+  },
+  "scripts": {
+    "build": "napi build --release --platform --output-dir dist",
+    "build:debug": "napi build --platform --output-dir dist",
+    "artifacts": "napi artifacts",
+    "prepublishOnly": "napi prepublish -t npm",
+    "version": "napi version",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "files": [
+    "dist/index.js",
+    "dist/index.d.ts",
+    "npm/**"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/realfizz/idalib-ts.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">= 16"
+  },
+  "optionalDependencies": {
+    "@idalib/ts-darwin-arm64": "0.1.0",
+    "@idalib/ts-darwin-x64": "0.1.0",
+    "@idalib/ts-linux-x64-gnu": "0.1.0",
+    "@idalib/ts-win32-x64-msvc": "0.1.0"
+  },
+  "devDependencies": {
+    "@napi-rs/cli": "^3.6.2"
+  }
+}

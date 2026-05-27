@@ -1,0 +1,18 @@
+{
+  "name": "@idalib/ts-darwin-arm64",
+  "version": "0.1.1",
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "main": "idalib-node.darwin-arm64.node",
+  "files": [
+    "idalib-node.darwin-arm64.node"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">= 10"
+  }
+}
