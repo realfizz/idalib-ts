@@ -8,7 +8,6 @@ use crate::collections::{
     names::NamesCollection, segments::SegmentsCollection, strings::StringsCollection,
     xrefs::XRefsCollection,
 };
-use crate::comment;
 use crate::error::map_ida_error;
 use crate::types::decompiler::JsCFunction;
 use crate::types::function::JsFunction;
@@ -383,7 +382,13 @@ impl Database {
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
         }
-        self.with_idb(|idb| comment::get_comment(idb, ea, repeatable))
+        self.with_idb(|idb| {
+            let addr = idalib::Address::from(ea);
+            match repeatable {
+                Some(true) => idb.get_cmt_with(addr, true),
+                _ => idb.get_cmt(addr),
+            }
+        })
     }
 
     #[napi]
@@ -397,7 +402,13 @@ impl Database {
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
         }
-        self.try_with_idb(|idb| comment::set_comment(idb, ea_val, &comment, repeatable))
+        self.try_with_idb(|idb| {
+            let addr = idalib::Address::from(ea_val);
+            match repeatable {
+                Some(true) => idb.set_cmt_with(addr, &comment, true).map_err(map_ida_error),
+                _ => idb.set_cmt(addr, &comment).map_err(map_ida_error),
+            }
+        })
     }
 
     #[napi]
@@ -411,7 +422,13 @@ impl Database {
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
         }
-        self.try_with_idb(|idb| comment::append_comment(idb, ea_val, &comment, repeatable))
+        self.try_with_idb(|idb| {
+            let addr = idalib::Address::from(ea_val);
+            match repeatable {
+                Some(true) => idb.append_cmt_with(addr, &comment, true).map_err(map_ida_error),
+                _ => idb.append_cmt(addr, &comment).map_err(map_ida_error),
+            }
+        })
     }
 
     #[napi]
@@ -420,7 +437,13 @@ impl Database {
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
         }
-        self.try_with_idb(|idb| comment::remove_comment(idb, ea_val, repeatable))
+        self.try_with_idb(|idb| {
+            let addr = idalib::Address::from(ea_val);
+            match repeatable {
+                Some(true) => idb.remove_cmt_with(addr, true).map_err(map_ida_error),
+                _ => idb.remove_cmt(addr).map_err(map_ida_error),
+            }
+        })
     }
 
     #[napi]
@@ -433,7 +456,13 @@ impl Database {
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
         }
-        self.with_idb(|idb| comment::get_function_comment(idb, ea_val, repeatable))
+        self.with_idb(|idb| {
+            let addr = idalib::Address::from(ea_val);
+            match repeatable {
+                Some(true) => idb.get_func_cmt_with(addr, true),
+                _ => idb.get_func_cmt(addr),
+            }
+        })
     }
 
     #[napi]
@@ -447,7 +476,13 @@ impl Database {
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
         }
-        self.try_with_idb(|idb| comment::set_function_comment(idb, ea_val, &comment, repeatable))
+        self.try_with_idb(|idb| {
+            let addr = idalib::Address::from(ea_val);
+            match repeatable {
+                Some(true) => idb.set_func_cmt_with(addr, &comment, true).map_err(map_ida_error),
+                _ => idb.set_func_cmt(addr, &comment).map_err(map_ida_error),
+            }
+        })
     }
 
     #[napi]
@@ -456,7 +491,13 @@ impl Database {
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
         }
-        self.try_with_idb(|idb| comment::remove_function_comment(idb, ea_val, repeatable))
+        self.try_with_idb(|idb| {
+            let addr = idalib::Address::from(ea_val);
+            match repeatable {
+                Some(true) => idb.remove_func_cmt_with(addr, true).map_err(map_ida_error),
+                _ => idb.remove_func_cmt(addr).map_err(map_ida_error),
+            }
+        })
     }
 
     #[napi]

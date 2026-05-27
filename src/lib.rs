@@ -1,7 +1,6 @@
 use napi_derive::napi;
 
 mod collections;
-mod comment;
 mod database;
 mod error;
 mod types;

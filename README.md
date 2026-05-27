@@ -35,15 +35,6 @@ npm run build
 
 needs rust toolchain and the ida sdk.
 
-## platforms
-
-| os | arch | package |
-|---|---|---|
-| macos | arm64 | `@idalib/ts-darwin-arm64` |
-| macos | x64 | `@idalib/ts-darwin-x64` |
-| linux | x64 (glibc) | `@idalib/ts-linux-x64-gnu` |
-| windows | x64 (msvc) | `@idalib/ts-win32-x64-msvc` |
-
 ## license
 
 mit
