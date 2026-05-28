@@ -21,7 +21,7 @@ impl BytesAccess {
     }
 
     #[napi]
-    pub async fn get_byte(&self, ea: BigInt) -> napi::Result<u8> {
+    pub fn get_byte(&self, ea: BigInt) -> napi::Result<u8> {
         let (sign, ea, _) = ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
@@ -30,7 +30,7 @@ impl BytesAccess {
     }
 
     #[napi]
-    pub async fn get_word(&self, ea: BigInt) -> napi::Result<u16> {
+    pub fn get_word(&self, ea: BigInt) -> napi::Result<u16> {
         let (sign, ea, _) = ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
@@ -39,7 +39,7 @@ impl BytesAccess {
     }
 
     #[napi]
-    pub async fn get_dword(&self, ea: BigInt) -> napi::Result<u32> {
+    pub fn get_dword(&self, ea: BigInt) -> napi::Result<u32> {
         let (sign, ea, _) = ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
@@ -48,7 +48,7 @@ impl BytesAccess {
     }
 
     #[napi]
-    pub async fn get_qword(&self, ea: BigInt) -> napi::Result<u64> {
+    pub fn get_qword(&self, ea: BigInt) -> napi::Result<u64> {
         let (sign, ea, _) = ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
@@ -57,7 +57,7 @@ impl BytesAccess {
     }
 
     #[napi]
-    pub async fn read(&self, ea: BigInt, size: u32) -> napi::Result<Vec<u8>> {
+    pub fn read(&self, ea: BigInt, size: u32) -> napi::Result<Vec<u8>> {
         let (sign, ea, _) = ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));

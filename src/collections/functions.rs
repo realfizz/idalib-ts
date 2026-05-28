@@ -26,7 +26,7 @@ pub struct FunctionsCollection {
 #[napi]
 impl FunctionsCollection {
     #[napi]
-    pub async fn list(&self) -> napi::Result<Vec<JsFunction>> {
+    pub fn list(&self) -> napi::Result<Vec<JsFunction>> {
         let guard = self
             .idb
             .lock()
@@ -44,7 +44,7 @@ impl FunctionsCollection {
     }
 
     #[napi]
-    pub async fn at(&self, ea: BigInt) -> napi::Result<Option<JsFunction>> {
+    pub fn at(&self, ea: BigInt) -> napi::Result<Option<JsFunction>> {
         let (sign, ea, _) = ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
@@ -61,7 +61,7 @@ impl FunctionsCollection {
     }
 
     #[napi]
-    pub async fn by_id(&self, id: u32) -> napi::Result<Option<JsFunction>> {
+    pub fn by_id(&self, id: u32) -> napi::Result<Option<JsFunction>> {
         let guard = self
             .idb
             .lock()
@@ -74,7 +74,7 @@ impl FunctionsCollection {
     }
 
     #[napi]
-    pub async fn count(&self) -> napi::Result<u32> {
+    pub fn count(&self) -> napi::Result<u32> {
         let guard = self
             .idb
             .lock()
@@ -87,7 +87,7 @@ impl FunctionsCollection {
     }
 
     #[napi]
-    pub async fn query(&self, options: FunctionQuery) -> napi::Result<Vec<JsFunction>> {
+    pub fn query(&self, options: FunctionQuery) -> napi::Result<Vec<JsFunction>> {
         let guard = self
             .idb
             .lock()

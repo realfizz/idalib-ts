@@ -67,7 +67,7 @@ pub struct SegmentsCollection {
 #[napi]
 impl SegmentsCollection {
     #[napi]
-    pub async fn list(&self) -> napi::Result<Vec<JsSegment>> {
+    pub fn list(&self) -> napi::Result<Vec<JsSegment>> {
         let guard = self.idb.lock().map_err(|e| {
             napi::Error::from_reason(format!("LockError: {}", e))
         })?;
@@ -85,7 +85,7 @@ impl SegmentsCollection {
     }
 
     #[napi]
-    pub async fn at(&self, ea: BigInt) -> napi::Result<Option<JsSegment>> {
+    pub fn at(&self, ea: BigInt) -> napi::Result<Option<JsSegment>> {
         let (sign, ea, _) = ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
@@ -104,7 +104,7 @@ impl SegmentsCollection {
     }
 
     #[napi]
-    pub async fn by_name(&self, name: String) -> napi::Result<Option<JsSegment>> {
+    pub fn by_name(&self, name: String) -> napi::Result<Option<JsSegment>> {
         let guard = self.idb.lock().map_err(|e| {
             napi::Error::from_reason(format!("LockError: {}", e))
         })?;

@@ -24,7 +24,7 @@ pub struct XRefsCollection {
 #[napi]
 impl XRefsCollection {
     #[napi]
-    pub async fn to(&self, ea: BigInt, query: Option<XRefQueryOpt>) -> napi::Result<Option<JsXRef>> {
+    pub fn to(&self, ea: BigInt, query: Option<XRefQueryOpt>) -> napi::Result<Option<JsXRef>> {
         let (sign, ea, _) = ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
@@ -57,7 +57,7 @@ impl XRefsCollection {
     }
 
     #[napi]
-    pub async fn from(&self, ea: BigInt, query: Option<XRefQueryOpt>) -> napi::Result<Option<JsXRef>> {
+    pub fn from(&self, ea: BigInt, query: Option<XRefQueryOpt>) -> napi::Result<Option<JsXRef>> {
         let (sign, ea, _) = ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));

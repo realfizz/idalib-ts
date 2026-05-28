@@ -10,7 +10,7 @@ pub struct BookmarksCollection {
 #[napi]
 impl BookmarksCollection {
     #[napi]
-    pub async fn list(&self) -> napi::Result<Vec<JsBookmark>> {
+    pub fn list(&self) -> napi::Result<Vec<JsBookmark>> {
         let guard = self.idb.lock().map_err(|e| {
             napi::Error::from_reason(format!("LockError: {}", e))
         })?;

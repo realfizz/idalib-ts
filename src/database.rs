@@ -88,7 +88,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn open(path: String, options: Option<OpenOptions>) -> napi::Result<Self> {
+    pub fn open(path: String, options: Option<OpenOptions>) -> napi::Result<Self> {
         let opts = options.unwrap_or_default();
         let auto_analyse = opts.auto_analyze.unwrap_or(true);
         let save = opts.save.unwrap_or(false);
@@ -119,7 +119,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn close(&self) -> napi::Result<()> {
+    pub fn close(&self) -> napi::Result<()> {
         let mut guard = self.idb.lock().map_err(|e| {
             napi::Error::from_reason(format!("LockError: {}", e))
         })?;
@@ -128,7 +128,7 @@ impl Database {
     }
 
     #[napi(getter)]
-    pub async fn path(&self) -> napi::Result<String> {
+    pub fn path(&self) -> napi::Result<String> {
         self.with_idb(|idb| idb.path().to_string_lossy().to_string())
     }
 
@@ -187,7 +187,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn metadata(&self) -> napi::Result<JsMetadata> {
+    pub fn metadata(&self) -> napi::Result<JsMetadata> {
         self.with_idb(|idb| {
             let meta = idb.meta();
             JsMetadata {
@@ -202,7 +202,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn address_to_string(&self, ea: BigInt) -> napi::Result<Option<String>> {
+    pub fn address_to_string(&self, ea: BigInt) -> napi::Result<Option<String>> {
         let (sign, ea, _) = ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
@@ -211,12 +211,12 @@ impl Database {
     }
 
     #[napi]
-    pub async fn register_by_name(&self, name: String) -> napi::Result<Option<u16>> {
+    pub fn register_by_name(&self, name: String) -> napi::Result<Option<u16>> {
         self.with_idb(|idb| idb.register_by_name(name))
     }
 
     #[napi]
-    pub async fn entries(&self) -> napi::Result<Vec<JsEntryPoint>> {
+    pub fn entries(&self) -> napi::Result<Vec<JsEntryPoint>> {
         self.with_idb(|idb| {
             let mut result = Vec::new();
             for (i, addr) in idb.entries().enumerate() {
@@ -231,7 +231,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn set_screen_address(&self, ea: BigInt) -> napi::Result<()> {
+    pub fn set_screen_address(&self, ea: BigInt) -> napi::Result<()> {
         let (sign, ea, _) = ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
@@ -240,18 +240,18 @@ impl Database {
     }
 
     #[napi]
-    pub async fn save_on_close(&self, status: bool) -> napi::Result<()> {
+    pub fn save_on_close(&self, status: bool) -> napi::Result<()> {
         self.with_idb_mut(|idb| idb.save_on_close(status))
     }
 
     #[napi]
-    pub async fn make_signatures(&self, only_pat: Option<bool>) -> napi::Result<()> {
+    pub fn make_signatures(&self, only_pat: Option<bool>) -> napi::Result<()> {
         let only_pat = only_pat.unwrap_or(false);
         self.try_with_idb_mut(|idb| idb.make_signatures(only_pat).map_err(map_ida_error))
     }
 
     #[napi]
-    pub async fn load_plugin(&self, name: String) -> napi::Result<JsPlugin> {
+    pub fn load_plugin(&self, name: String) -> napi::Result<JsPlugin> {
         self.try_with_idb(|idb| {
             idb.load_plugin(&name).map_err(map_ida_error)?;
             Ok(JsPlugin { name })
@@ -259,7 +259,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn find_plugin(
+    pub fn find_plugin(
         &self,
         name: String,
         load_if_needed: bool,
@@ -273,12 +273,12 @@ impl Database {
     }
 
     #[napi]
-    pub async fn auto_wait(&self) -> napi::Result<bool> {
+    pub fn auto_wait(&self) -> napi::Result<bool> {
         self.with_idb_mut(|idb| idb.auto_wait())
     }
 
     #[napi]
-    pub async fn function_cfg(&self, func: &JsFunction) -> napi::Result<crate::types::function::JsFunctionCfg> {
+    pub fn function_cfg(&self, func: &JsFunction) -> napi::Result<crate::types::function::JsFunctionCfg> {
         self.try_with_idb(|idb| {
             let f = idb
                 .function_at(func.start_ea as u64)
@@ -291,7 +291,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn instruction_at(&self, ea: BigInt) -> napi::Result<Option<Instruction>> {
+    pub fn instruction_at(&self, ea: BigInt) -> napi::Result<Option<Instruction>> {
         let (sign, ea, _) = ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
@@ -301,7 +301,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn next_head(&self, ea: BigInt, max_ea: Option<BigInt>) -> napi::Result<Option<u64>> {
+    pub fn next_head(&self, ea: BigInt, max_ea: Option<BigInt>) -> napi::Result<Option<u64>> {
         let (sign, ea, _) = ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
@@ -321,7 +321,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn prev_head(&self, ea: BigInt, min_ea: Option<BigInt>) -> napi::Result<Option<u64>> {
+    pub fn prev_head(&self, ea: BigInt, min_ea: Option<BigInt>) -> napi::Result<Option<u64>> {
         let (sign, ea, _) = ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
@@ -341,7 +341,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn instruction_alignment_at(&self, ea: BigInt) -> napi::Result<Option<u32>> {
+    pub fn instruction_alignment_at(&self, ea: BigInt) -> napi::Result<Option<u32>> {
         let (sign, ea, _) = ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
@@ -350,7 +350,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn find_text(&self, start_ea: BigInt, text: String) -> napi::Result<Option<u64>> {
+    pub fn find_text(&self, start_ea: BigInt, text: String) -> napi::Result<Option<u64>> {
         let (sign, ea, _) = start_ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
@@ -359,7 +359,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn find_imm(&self, start_ea: BigInt, value: u32) -> napi::Result<Option<u64>> {
+    pub fn find_imm(&self, start_ea: BigInt, value: u32) -> napi::Result<Option<u64>> {
         let (sign, ea, _) = start_ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
@@ -368,7 +368,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn find_defined(&self, start_ea: BigInt) -> napi::Result<Option<u64>> {
+    pub fn find_defined(&self, start_ea: BigInt) -> napi::Result<Option<u64>> {
         let (sign, ea, _) = start_ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
@@ -377,7 +377,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn get_comment(&self, ea: BigInt, repeatable: Option<bool>) -> napi::Result<Option<String>> {
+    pub fn get_comment(&self, ea: BigInt, repeatable: Option<bool>) -> napi::Result<Option<String>> {
         let (sign, ea, _) = ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
@@ -392,7 +392,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn set_comment(
+    pub fn set_comment(
         &self,
         ea: BigInt,
         comment: String,
@@ -412,7 +412,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn append_comment(
+    pub fn append_comment(
         &self,
         ea: BigInt,
         comment: String,
@@ -432,7 +432,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn remove_comment(&self, ea: BigInt, repeatable: Option<bool>) -> napi::Result<()> {
+    pub fn remove_comment(&self, ea: BigInt, repeatable: Option<bool>) -> napi::Result<()> {
         let (sign, ea_val, _) = ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
@@ -447,7 +447,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn get_function_comment(
+    pub fn get_function_comment(
         &self,
         ea: BigInt,
         repeatable: Option<bool>,
@@ -466,7 +466,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn set_function_comment(
+    pub fn set_function_comment(
         &self,
         ea: BigInt,
         comment: String,
@@ -486,7 +486,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn remove_function_comment(&self, ea: BigInt, repeatable: Option<bool>) -> napi::Result<()> {
+    pub fn remove_function_comment(&self, ea: BigInt, repeatable: Option<bool>) -> napi::Result<()> {
         let (sign, ea_val, _) = ea.get_u64();
         if sign {
             return Err(napi::Error::from_reason("Address cannot be negative".to_string()));
@@ -501,7 +501,7 @@ impl Database {
     }
 
     #[napi]
-    pub async fn decompile(
+    pub fn decompile(
         &self,
         func: &JsFunction,
         options: Option<DecompileOptions>,

@@ -11,7 +11,7 @@ pub struct NamesCollection {
 #[napi]
 impl NamesCollection {
     #[napi]
-    pub async fn list(&self) -> napi::Result<Vec<JsNameEntry>> {
+    pub fn list(&self) -> napi::Result<Vec<JsNameEntry>> {
         let guard = self.idb.lock().map_err(|e| {
             napi::Error::from_reason(format!("LockError: {}", e))
         })?;

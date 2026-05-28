@@ -11,7 +11,7 @@ pub struct StringsCollection {
 #[napi]
 impl StringsCollection {
     #[napi]
-    pub async fn list(&self) -> napi::Result<Vec<JsStringEntry>> {
+    pub fn list(&self) -> napi::Result<Vec<JsStringEntry>> {
         let guard = self
             .idb
             .lock()
